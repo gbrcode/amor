@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Para Mi Amorshito Liceth ❤️</title>
+
+<style>
+body{
+    margin:0;
+    background:black;
+    font-family:'Segoe UI', sans-serif;
+    color:white;
+    overflow:hidden;
+}
+
+/* Pantalla contraseña */
+#lockScreen{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:black;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+#lockScreen input{
+    padding:10px;
+    font-size:18px;
+    border-radius:10px;
+    border:none;
+    text-align:center;
+}
+
+#lockScreen button{
+    margin-top:10px;
+    padding:10px 20px;
+    border:none;
+    border-radius:20px;
+    background:#ff4da6;
+    color:white;
+    cursor:pointer;
+}
+
+/* Juego */
+#game{
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    padding:20px;
+}
+
+#gameContainer{
+    display:flex;
+    gap:20px;
+    margin-top:30px;
+    align-items:flex-start;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+#puzzle{
+    width:90vw;
+    max-width:600px;
+    aspect-ratio:1/1;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    grid-template-rows:repeat(4,1fr);
+    gap:2px;
+}
+
+.piece{
+    background-image:url('1.jpg');
+    background-size:cover;
+    cursor:grab;
+    width:100%;
+    height:100%;
+}
+
+#reference{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+#reference img{
+    width:80vw;
+    max-width:250px;
+    border-radius:15px;
+    box-shadow:0 0 20px #ff4da6;
+}
+
+/* Final */
+#finalScreen{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:black;
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+}
+
+#slideshow{
+    width:90vw;
+    height:90vh;
+    object-fit:contain;
+    border-radius:20px;
+    box-shadow:0 0 40px #ff4da6;
+}
+#liceth{
+    font-size:50px;
+    color:#ff4da6;
+    animation:glow 2s infinite alternate;
+}
+
+@keyframes glow{
+    from{text-shadow:0 0 10px #ff4da6;}
+    to{text-shadow:0 0 40px #ff99cc;}
+}
+
+.heart, .petal{
+    position:absolute;
+    animation:fall linear infinite;
+}
+
+@keyframes fall{
+    0%{transform:translateY(-100px);opacity:1;}
+    100%{transform:translateY(100vh);opacity:0;}
+}
+
+button{
+    margin-top:20px;
+    padding:10px 20px;
+    border:none;
+    border-radius:20px;
+    background:#ff4da6;
+    color:white;
+    cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<div id="lockScreen">
+    <h2>Ingresa nuestra fecha especial ❤️</h2>
+    <input type="password" id="pass" placeholder="dd/mm/aaaa">
+    <button onclick="checkPass()">Entrar</button>
+</div>
+
+<div id="game">
+    <h2>Arma el rompecabezas, Liceth ❤️</h2>
+    <div id="gameContainer">
+        <div id="puzzle"></div>
+        <div id="reference">
+            <img src="1.jpg">
+            <p>Imagen guía 💖</p>
+        </div>
+    </div>
+</div>
+
+<div id="finalScreen">
+    <div id="liceth">Recuerdos de Nuestras Aventuras Amorcito ❤️</div>
+    <img id="slideshow" src="2.jpeg">
+    <div id="message"></div>
+    <button onclick="location.reload()">Volver a sentir ❤️</button>
+</div>
+
+<audio id="music" src="musica.mp3"></audio>
+
+<script>
+
+/* CONTRASEÑA */
+function checkPass(){
+    const input = document.getElementById("pass").value.trim();
+    if(input === "10092025" || input === "100925"){
+        document.getElementById("lockScreen").style.display="none";
+        document.getElementById("game").style.display="flex";
+        createPieces(); // Crear puzzle cuando se muestra el juego
+    }else{
+        alert("Fecha incorrecta mi amor 🥺");
+    }
+}
+
+/* PUZZLE */
+const puzzle = document.getElementById("puzzle");
+const size = 4;
+let pieces = [];
+
+function createPieces(){
+    pieces = [];
+    puzzle.innerHTML = "";
+    const puzzleWidth = puzzle.clientWidth;
+    const pieceSize = puzzleWidth / size;
+
+    for(let i=0; i<size*size; i++){
+        const piece = document.createElement("div");
+        piece.classList.add("piece");
+        piece.draggable = true;
+
+        // Posición correcta guardada en data
+        const correctX = (i%size)*-pieceSize;
+        const correctY = Math.floor(i/size)*-pieceSize;
+        piece.dataset.correctX = correctX;
+        piece.dataset.correctY = correctY;
+
+        piece.style.backgroundPosition = `${correctX}px ${correctY}px`;
+        piece.style.backgroundSize = `${puzzleWidth}px ${puzzleWidth}px`;
+
+        pieces.push(piece);
+    }
+
+    // Mezclar
+    pieces.sort(()=>Math.random()-0.5);
+    pieces.forEach(p=>puzzle.appendChild(p));
+
+    // Drag & drop y touch
+    pieces.forEach(piece=>{
+        // Drag
+        piece.addEventListener("dragstart", e => dragged = piece);
+        piece.addEventListener("dragover", e=> e.preventDefault());
+        piece.addEventListener("drop", ()=>{
+            let temp = dragged.style.backgroundPosition;
+            dragged.style.backgroundPosition = piece.style.backgroundPosition;
+            piece.style.backgroundPosition = temp;
+            checkWin();
+        });
+
+        // Touch (para móviles)
+        piece.addEventListener("touchstart", e=>{
+            dragged = piece;
+        });
+        piece.addEventListener("touchend", e=>{
+            let touch = e.changedTouches[0];
+            const target = document.elementFromPoint(touch.clientX, touch.clientY);
+            if(target && target.classList.contains("piece") && target!==dragged){
+                let temp = dragged.style.backgroundPosition;
+                dragged.style.backgroundPosition = target.style.backgroundPosition;
+                target.style.backgroundPosition = temp;
+                checkWin();
+            }
+        });
+    });
+}
+
+window.addEventListener("resize", ()=>{
+    if(document.getElementById("game").style.display==="flex"){
+        createPieces(); // Recalcular puzzle
+    }
+});
+
+/* CHECK WIN */
+function checkWin(){
+    let correctCount = 0;
+    pieces.forEach(piece=>{
+        if(piece.style.backgroundPosition === piece.dataset.correctX + "px " + piece.dataset.correctY + "px"){
+            correctCount++;
+        }
+    });
+    if(correctCount === size*size){
+        showFinal();
+    }
+}
+
+/* FINAL */
+function showFinal(){
+    document.getElementById("game").style.display="none";
+    document.getElementById("finalScreen").style.display="flex";
+    document.getElementById("music").play();
+    iniciarSlideshow();
+}
+
+/* SLIDESHOW */
+const imagenes=[
+"2.jpeg","3.jpeg","4.jpeg","5.jpeg","6.jpeg",
+"7.jpeg","8.jpeg","9.jpeg","10.jpeg","11.jpeg","12.jpeg"
+];
+
+let indice=0;
+
+function iniciarSlideshow(){
+    const img=document.getElementById("slideshow");
+
+    function cambiarImagen(){
+        if(indice < imagenes.length){
+            img.style.opacity=0;
+            setTimeout(()=>{
+                img.src=imagenes[indice];
+                img.style.opacity=1;
+                indice++;
+            },1200);
+            setTimeout(cambiarImagen,4000);
+        }else{
+            img.style.opacity=0;
+            setTimeout(()=>{
+                img.style.display="none"; 
+                typeWriter(); 
+                createHearts();
+                createPetals();
+            },1200);
+        }
+    }
+
+    cambiarImagen();
+}
+
+/* EFECTOS */
+function createHearts(){
+    setInterval(()=>{
+        const heart=document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML="❤️";
+        heart.style.left=Math.random()*100+"vw";
+        heart.style.fontSize=(20+Math.random()*30)+"px";
+        heart.style.animationDuration=(5+Math.random()*3)+"s";
+        document.body.appendChild(heart);
+        setTimeout(()=>heart.remove(),8000);
+    },400);
+}
+
+function createPetals(){
+    setInterval(()=>{
+        const petal=document.createElement("div");
+        petal.classList.add("petal");
+        petal.innerHTML="🌹";
+        petal.style.left=Math.random()*100+"vw";
+        petal.style.fontSize=(20+Math.random()*30)+"px";
+        petal.style.animationDuration=(6+Math.random()*4)+"s";
+        document.body.appendChild(petal);
+        setTimeout(()=>petal.remove(),9000);
+    },500);
+}
+
+/* MENSAJE */
+const text=`Desde que llegaste a mi vida Amorshito todo cambió... 💖
+
+Le agradezco a Dios por cruzar nuestros caminos,
+por ponernos en el momento perfecto y en el lugar exacto,
+
+No quiero prometerte cosas enormes ni palabras vacías…
+solo quiero caminar contigo cada día,
+sostener tu mano cuando el mundo se ponga difícil,
+abrazarte cuando el mundo pese,
+y reír contigo cuando todo brille.
+
+Amorshito… 
+Eres mi paz en medio del caos.
+Eres mi alegría en los días grises.
+Eres mi hogar, aunque estemos en cualquier lugar.
+Eres todo lo que alguna vez soñé,
+y mucho más de lo que imaginé merecer.
+
+Te amo profundamente con el corazón,
+con el alma y con todo lo que soy.❤️`;
+
+let i=0;
+
+function typeWriter(){
+    const msg=document.getElementById("message");
+    if(i<text.length){
+        msg.innerHTML+=text.charAt(i)==="\n"?"<br>":text.charAt(i);
+        i++;
+        setTimeout(typeWriter,45);
+    }
+}
+
+</script>
+
+</body>
+</html>
