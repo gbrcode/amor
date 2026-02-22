@@ -67,11 +67,11 @@ width:100%;
 max-width:900px;
 }
 
-/* PUZZLE RESPONSIVO */
+/* Puzzle */
 
 #puzzle{
-width:min(90vw, 520px);
-height:min(90vw, 520px);
+width:min(90vw,520px);
+height:min(90vw,520px);
 display:grid;
 grid-template-columns:repeat(4,1fr);
 grid-template-rows:repeat(4,1fr);
@@ -96,12 +96,11 @@ align-items:center;
 
 #reference img{
 width:min(70vw,220px);
-height:auto;
 border-radius:15px;
 box-shadow:0 0 20px #ff4da6;
 }
 
-/* FINAL */
+/* Final */
 
 #finalScreen{
 position:fixed;
@@ -117,7 +116,7 @@ padding:20px;
 box-sizing:border-box;
 }
 
-/* CONTENEDOR FIJO PARA EVITAR SALTOS */
+/* Carrusel */
 
 #slideshowContainer{
 width:min(92vw,700px);
@@ -128,22 +127,22 @@ align-items:center;
 border-radius:20px;
 box-shadow:0 0 40px #ff4da6;
 overflow:hidden;
+transition:opacity 1s;
 }
-
-/* IMAGEN RESPONSIVA SIN CAMBIOS DE TAMAÑO */
 
 #slideshow{
 width:100%;
 height:100%;
 object-fit:contain;
-transition:opacity 1s ease;
+transition:opacity 1s;
 }
+
+/* Título */
 
 #liceth{
 font-size:clamp(28px,5vw,50px);
 color:#ff4da6;
 animation:glow 2s infinite alternate;
-text-align:center;
 margin-bottom:20px;
 }
 
@@ -151,6 +150,22 @@ margin-bottom:20px;
 from{text-shadow:0 0 10px #ff4da6;}
 to{text-shadow:0 0 40px #ff99cc;}
 }
+
+/* Mensaje final */
+
+#message{
+max-width:700px;
+width:90%;
+margin-top:40px;
+font-size:clamp(18px,2.5vw,22px);
+line-height:1.8;
+text-align:center;
+opacity:0;
+transform:translateY(20px);
+transition:opacity 2s, transform 2s;
+}
+
+/* efectos */
 
 .heart,.petal{
 position:absolute;
@@ -214,7 +229,7 @@ cursor:pointer;
 
 <script>
 
-/* CONTRASEÑA */
+/* contraseña */
 
 function checkPass(){
 const input = document.getElementById("pass").value.trim();
@@ -228,7 +243,7 @@ alert("Fecha incorrecta mi amor 🥺");
 }
 }
 
-/* PUZZLE */
+/* puzzle */
 
 const puzzle = document.getElementById("puzzle");
 const size = 4;
@@ -330,7 +345,7 @@ setTimeout(showFinal,500);
 
 }
 
-/* FINAL */
+/* final */
 
 function showFinal(){
 
@@ -341,7 +356,7 @@ iniciarSlideshow();
 
 }
 
-/* SLIDESHOW */
+/* carrusel */
 
 const imagenes=[
 "2.jpeg","3.jpeg","4.jpeg","5.jpeg","6.jpeg",
@@ -373,10 +388,14 @@ setTimeout(cambiarImagen,4000);
 img.style.opacity=0;
 
 setTimeout(()=>{
-img.style.display="none";
-typeWriter();
+
+document.getElementById("slideshowContainer").remove();
+
+mostrarMensaje();
+
 createHearts();
 createPetals();
+
 },1200);
 
 }
@@ -386,7 +405,20 @@ createPetals();
 cambiarImagen();
 }
 
-/* EFECTOS */
+/* mensaje cinematográfico */
+
+function mostrarMensaje(){
+
+const box = document.getElementById("message");
+
+box.style.opacity=1;
+box.style.transform="translateY(0)";
+
+typeWriter();
+
+}
+
+/* efectos */
 
 function createHearts(){
 setInterval(()=>{
@@ -414,7 +446,7 @@ setTimeout(()=>petal.remove(),9000);
 },500);
 }
 
-/* MENSAJE */
+/* texto */
 
 const text=`Desde que llegaste a mi vida Amorshito todo cambió en mi vida... 💖
 
@@ -443,12 +475,13 @@ TKM X Siempre.❤️`;
 let i=0;
 
 function typeWriter(){
+
 const msg=document.getElementById("message");
 
 if(i<text.length){
 msg.innerHTML+=text.charAt(i)==="\n"?"<br>":text.charAt(i);
 i++;
-setTimeout(typeWriter,45);
+setTimeout(typeWriter,40);
 }
 
 }
@@ -457,5 +490,3 @@ setTimeout(typeWriter,45);
 
 </body>
 </html>
-
-
