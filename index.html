@@ -10,7 +10,7 @@ body{
     background:black;
     font-family:'Segoe UI', sans-serif;
     color:white;
-    overflow-x:hidden;
+    overflow:hidden;
 }
 
 /* Pantalla contraseña */
@@ -55,6 +55,7 @@ body{
     display:flex;
     gap:20px;
     margin-top:30px;
+    align-items:flex-start;
     flex-wrap:wrap;
     justify-content:center;
 }
@@ -75,7 +76,6 @@ body{
     cursor:grab;
     width:100%;
     height:100%;
-    touch-action: none; /* importante para touch drag */
 }
 
 #reference{
@@ -152,7 +152,7 @@ button{
 </div>
 
 <div id="game">
-    <h2>Arma el rompecabezas, Liceth ❤️</h2>
+    <h2>Arma el rompecabezas, Amorshito ❤️</h2>
     <div id="gameContainer">
         <div id="puzzle"></div>
         <div id="reference">
@@ -172,76 +172,56 @@ button{
 <audio id="music" src="musica.mp3"></audio>
 
 <script>
+
 /* CONTRASEÑA */
 function checkPass(){
     const input = document.getElementById("pass").value.trim();
     if(input === "10092025" || input === "100925"){
         document.getElementById("lockScreen").style.display="none";
         document.getElementById("game").style.display="flex";
-        createPieces();
+        createPieces(); // <-- Crear puzzle al mostrar el juego
     }else{
         alert("Fecha incorrecta mi amor 🥺");
     }
 }
 
-/* PUZZLE RESPONSIVO */
+/* PUZZLE */
 const puzzle = document.getElementById("puzzle");
 const size = 4;
 let pieces = [];
-let dragged = null;
+let correct = 0;
 
 function createPieces(){
     pieces = [];
     puzzle.innerHTML = "";
     const puzzleWidth = puzzle.clientWidth;
-    const pieceSize = puzzleWidth / size;
+    const pieceSize = puzzleWidth/size;
 
     for(let i=0;i<size*size;i++){
         const piece = document.createElement("div");
         piece.classList.add("piece");
+        piece.draggable=true;
 
-        // Guardar posición correcta
-        const correctX = (i%size)*-pieceSize;
-        const correctY = Math.floor(i/size)*-pieceSize;
-        piece.dataset.correctX = correctX;
-        piece.dataset.correctY = correctY;
-
-        piece.style.backgroundPosition = `${correctX}px ${correctY}px`;
-        piece.style.backgroundSize = `${puzzleWidth}px ${puzzleWidth}px`;
+        const x=(i%size)*-pieceSize;
+        const y=Math.floor(i/size)*-pieceSize;
+        piece.style.backgroundPosition=`${x}px ${y}px`;
+        piece.style.backgroundSize=`${puzzleWidth}px ${puzzleWidth}px`;
 
         pieces.push(piece);
     }
 
-    // Mezclar piezas
     pieces.sort(()=>Math.random()-0.5);
     pieces.forEach(p=>puzzle.appendChild(p));
 
-    pieces.forEach(piece=>{
-        // Drag & Drop PC
-        piece.draggable = true;
-        piece.addEventListener("dragstart", e => dragged = piece);
-        piece.addEventListener("dragover", e=> e.preventDefault());
-        piece.addEventListener("drop", ()=>{
-            let temp = dragged.style.backgroundPosition;
-            dragged.style.backgroundPosition = piece.style.backgroundPosition;
-            piece.style.backgroundPosition = temp;
+    let dragged;
+    document.querySelectorAll(".piece").forEach(piece=>{
+        piece.addEventListener("dragstart",()=>dragged=piece);
+        piece.addEventListener("dragover",e=>e.preventDefault());
+        piece.addEventListener("drop",()=>{
+            let temp=dragged.style.backgroundPosition;
+            dragged.style.backgroundPosition=piece.style.backgroundPosition;
+            piece.style.backgroundPosition=temp;
             checkWin();
-        });
-
-        // Touch para móviles
-        piece.addEventListener("touchstart", e => {
-            dragged = piece;
-        });
-        piece.addEventListener("touchmove", e => e.preventDefault());
-        piece.addEventListener("touchend", e=>{
-            const touch = e.changedTouches[0];
-            const targetElem = document.elementFromPoint(touch.clientX, touch.clientY);
-            if(targetElem && targetElem.classList.contains("piece") && targetElem !== dragged){
-                let temp = dragged.style.backgroundPosition;
-                dragged.style.backgroundPosition = targetElem.style.backgroundPosition;
-                targetElem.style.backgroundPosition = temp;
-                checkWin();
-            }
         });
     });
 }
@@ -254,15 +234,16 @@ window.addEventListener("resize", ()=>{
 
 /* CHECK WIN */
 function checkWin(){
-    let correctCount = 0;
-    pieces.forEach(piece=>{
-        if(piece.style.backgroundPosition === piece.dataset.correctX + "px " + piece.dataset.correctY + "px"){
-            correctCount++;
-        }
+    correct=0;
+    const puzzleWidth = puzzle.clientWidth;
+    const pieceSize = puzzleWidth/size;
+
+    document.querySelectorAll(".piece").forEach((piece,i)=>{
+        const x=(i%size)*-pieceSize;
+        const y=Math.floor(i/size)*-pieceSize;
+        if(piece.style.backgroundPosition===`${x}px ${y}px`) correct++;
     });
-    if(correctCount === size*size){
-        showFinal();
-    }
+    if(correct===size*size) showFinal();
 }
 
 /* FINAL */
@@ -274,31 +255,42 @@ function showFinal(){
 }
 
 /* SLIDESHOW */
-const imagenes=["2.jpeg","3.jpeg","4.jpeg","5.jpeg","6.jpeg",
-"7.jpeg","8.jpeg","9.jpeg","10.jpeg","11.jpeg","12.jpeg"];
+const imagenes=[
+"2.jpeg","3.jpeg","4.jpeg","5.jpeg","6.jpeg",
+"7.jpeg","8.jpeg","9.jpeg","10.jpeg","11.jpeg","12.jpeg"
+];
 
 let indice=0;
+
 function iniciarSlideshow(){
     const img=document.getElementById("slideshow");
+
     function cambiarImagen(){
-        if(indice<imagenes.length){
+        if(indice < imagenes.length){
+
             img.style.opacity=0;
+
             setTimeout(()=>{
                 img.src=imagenes[indice];
                 img.style.opacity=1;
                 indice++;
             },1200);
+
             setTimeout(cambiarImagen,4000);
+
         }else{
             img.style.opacity=0;
+
             setTimeout(()=>{
-                img.style.display="none";
-                typeWriter();
+                img.style.display="none"; 
+                typeWriter(); 
                 createHearts();
                 createPetals();
+
             },1200);
         }
     }
+
     cambiarImagen();
 }
 
@@ -352,6 +344,7 @@ Te amo profundamente con el corazón,
 con el alma y con todo lo que soy.❤️`;
 
 let i=0;
+
 function typeWriter(){
     const msg=document.getElementById("message");
     if(i<text.length){
@@ -360,6 +353,7 @@ function typeWriter(){
         setTimeout(typeWriter,45);
     }
 }
+
 </script>
 
 </body>
