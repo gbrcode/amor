@@ -2,172 +2,212 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Para Mi Amorshito Liceth ❤️</title>
 
 <style>
+
 body{
-    margin:0;
-    background:black;
-    font-family:'Segoe UI', sans-serif;
-    color:white;
-    overflow:hidden;
+margin:0;
+background:black;
+font-family:'Segoe UI', sans-serif;
+color:white;
+overflow:hidden;
 }
 
 /* Pantalla contraseña */
 #lockScreen{
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:black;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
+position:fixed;
+width:100%;
+height:100%;
+background:black;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
 }
 
 #lockScreen input{
-    padding:10px;
-    font-size:18px;
-    border-radius:10px;
-    border:none;
-    text-align:center;
+padding:10px;
+font-size:18px;
+border-radius:10px;
+border:none;
+text-align:center;
 }
 
 #lockScreen button{
-    margin-top:10px;
-    padding:10px 20px;
-    border:none;
-    border-radius:20px;
-    background:#ff4da6;
-    color:white;
-    cursor:pointer;
+margin-top:10px;
+padding:10px 20px;
+border:none;
+border-radius:20px;
+background:#ff4da6;
+color:white;
+cursor:pointer;
 }
 
 /* Juego */
+
 #game{
-    display:none;
-    flex-direction:column;
-    align-items:center;
-    padding:20px;
+display:none;
+flex-direction:column;
+align-items:center;
+padding:20px;
+width:100%;
+box-sizing:border-box;
 }
 
 #gameContainer{
-    display:flex;
-    gap:20px;
-    margin-top:30px;
-    align-items:flex-start;
-    flex-wrap:wrap;
-    justify-content:center;
+display:flex;
+gap:20px;
+margin-top:30px;
+align-items:center;
+flex-wrap:wrap;
+justify-content:center;
+width:100%;
+max-width:900px;
 }
 
+/* PUZZLE RESPONSIVO */
+
 #puzzle{
-    width:90vw;
-    max-width:600px;
-    aspect-ratio:1/1;
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    grid-template-rows:repeat(4,1fr);
-    gap:2px;
-    touch-action:none;
+width:min(90vw, 520px);
+height:min(90vw, 520px);
+display:grid;
+grid-template-columns:repeat(4,1fr);
+grid-template-rows:repeat(4,1fr);
+gap:3px;
+touch-action:none;
 }
 
 .piece{
-    background-image:url('1.jpg');
-    background-size:400% 400%;
-    cursor:grab;
-    width:100%;
-    height:100%;
+background-image:url('1.jpg');
+background-size:400% 400%;
+width:100%;
+height:100%;
 }
 
+/* Imagen referencia */
+
 #reference{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
+display:flex;
+flex-direction:column;
+align-items:center;
 }
 
 #reference img{
-    width:80vw;
-    max-width:250px;
-    border-radius:15px;
-    box-shadow:0 0 20px #ff4da6;
+width:min(70vw,220px);
+height:auto;
+border-radius:15px;
+box-shadow:0 0 20px #ff4da6;
 }
 
-/* Final */
+/* FINAL */
+
 #finalScreen{
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:black;
-    display:none;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
+position:fixed;
+width:100%;
+height:100%;
+background:black;
+display:none;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:20px;
+box-sizing:border-box;
 }
+
+/* CONTENEDOR FIJO PARA EVITAR SALTOS */
+
+#slideshowContainer{
+width:min(92vw,700px);
+height:min(70vh,520px);
+display:flex;
+justify-content:center;
+align-items:center;
+border-radius:20px;
+box-shadow:0 0 40px #ff4da6;
+overflow:hidden;
+}
+
+/* IMAGEN RESPONSIVA SIN CAMBIOS DE TAMAÑO */
 
 #slideshow{
-    width:90vw;
-    height:90vh;
-    object-fit:contain;
-    border-radius:20px;
-    box-shadow:0 0 40px #ff4da6;
+width:100%;
+height:100%;
+object-fit:contain;
+transition:opacity 1s ease;
 }
+
 #liceth{
-    font-size:50px;
-    color:#ff4da6;
-    animation:glow 2s infinite alternate;
+font-size:clamp(28px,5vw,50px);
+color:#ff4da6;
+animation:glow 2s infinite alternate;
+text-align:center;
+margin-bottom:20px;
 }
 
 @keyframes glow{
-    from{text-shadow:0 0 10px #ff4da6;}
-    to{text-shadow:0 0 40px #ff99cc;}
+from{text-shadow:0 0 10px #ff4da6;}
+to{text-shadow:0 0 40px #ff99cc;}
 }
 
-.heart, .petal{
-    position:absolute;
-    animation:fall linear infinite;
+.heart,.petal{
+position:absolute;
+animation:fall linear infinite;
 }
 
 @keyframes fall{
-    0%{transform:translateY(-100px);opacity:1;}
-    100%{transform:translateY(100vh);opacity:0;}
+0%{transform:translateY(-100px);opacity:1;}
+100%{transform:translateY(100vh);opacity:0;}
 }
 
 button{
-    margin-top:20px;
-    padding:10px 20px;
-    border:none;
-    border-radius:20px;
-    background:#ff4da6;
-    color:white;
-    cursor:pointer;
+margin-top:20px;
+padding:10px 20px;
+border:none;
+border-radius:20px;
+background:#ff4da6;
+color:white;
+cursor:pointer;
 }
+
 </style>
 </head>
 <body>
 
 <div id="lockScreen">
-    <h2>Ingresa nuestra fecha especial ❤️</h2>
-    <input type="password" id="pass" placeholder="dd/mm/aaaa">
-    <button onclick="checkPass()">Entrar</button>
+<h2>Ingresa nuestra fecha especial ❤️</h2>
+<input type="password" id="pass" placeholder="dd/mm/aaaa">
+<button onclick="checkPass()">Entrar</button>
 </div>
 
 <div id="game">
-    <h2>Arma el rompecabezas, Amorshito ❤️</h2>
-    <div id="gameContainer">
-        <div id="puzzle"></div>
-        <div id="reference">
-            <img src="1.jpg">
-            <p>Imagen guía 💖</p>
-        </div>
-    </div>
+<h2>Arma el rompecabezas, Amorshito ❤️</h2>
+
+<div id="gameContainer">
+<div id="puzzle"></div>
+
+<div id="reference">
+<img src="1.jpg">
+<p>Imagen guía 💖</p>
+</div>
+</div>
+
 </div>
 
 <div id="finalScreen">
-    <div id="liceth">Recuerdos de Nuestras Aventuras Amorcito ❤️</div>
-    <img id="slideshow" src="2.jpeg">
-    <div id="message"></div>
-    <button onclick="location.reload()">Volver a sentir ❤️</button>
+
+<div id="liceth">Recuerdos de Nuestras Aventuras Amorcito ❤️</div>
+
+<div id="slideshowContainer">
+<img id="slideshow" src="2.jpeg">
+</div>
+
+<div id="message"></div>
+
+<button onclick="location.reload()">Volver a sentir ❤️</button>
+
 </div>
 
 <audio id="music" src="musica.mp3"></audio>
@@ -175,18 +215,20 @@ button{
 <script>
 
 /* CONTRASEÑA */
+
 function checkPass(){
-    const input = document.getElementById("pass").value.trim();
-    if(input === "10092025" || input === "100925"){
-        document.getElementById("lockScreen").style.display="none";
-        document.getElementById("game").style.display="flex";
-        createPieces();
-    }else{
-        alert("Fecha incorrecta mi amor 🥺");
-    }
+const input = document.getElementById("pass").value.trim();
+
+if(input === "10092025" || input === "100925"){
+document.getElementById("lockScreen").style.display="none";
+document.getElementById("game").style.display="flex";
+createPieces();
+}else{
+alert("Fecha incorrecta mi amor 🥺");
+}
 }
 
-/* PUZZLE MEJORADO PARA CELULAR */
+/* PUZZLE */
 
 const puzzle = document.getElementById("puzzle");
 const size = 4;
@@ -195,104 +237,112 @@ let draggedIndex = null;
 
 function createPieces(){
 
-    puzzle.innerHTML="";
-    board=[];
+puzzle.innerHTML="";
+board=[];
 
-    for(let i=0;i<size*size;i++){
-        board.push(i);
-    }
+for(let i=0;i<size*size;i++){
+board.push(i);
+}
 
-    board.sort(()=>Math.random()-0.5);
+board.sort(()=>Math.random()-0.5);
 
-    board.forEach((val,index)=>{
-        const piece=document.createElement("div");
-        piece.className="piece";
+board.forEach((val,index)=>{
 
-        const x = val % size;
-        const y = Math.floor(val / size);
+const piece=document.createElement("div");
+piece.className="piece";
 
-        piece.style.backgroundPosition = `${(x*100)/(size-1)}% ${(y*100)/(size-1)}%`;
+const x = val % size;
+const y = Math.floor(val / size);
 
-        piece.dataset.index=index;
-        piece.dataset.correct=val;
+piece.style.backgroundPosition = `${(x*100)/(size-1)}% ${(y*100)/(size-1)}%`;
 
-        puzzle.appendChild(piece);
-    });
+piece.dataset.index=index;
+piece.dataset.correct=val;
 
-    addTouchEvents();
+puzzle.appendChild(piece);
+
+});
+
+addTouchEvents();
 }
 
 function addTouchEvents(){
 
-    document.querySelectorAll(".piece").forEach(piece=>{
+document.querySelectorAll(".piece").forEach(piece=>{
 
-        piece.addEventListener("pointerdown", e=>{
-            draggedIndex = Number(piece.dataset.index);
-            piece.setPointerCapture(e.pointerId);
-        });
+piece.addEventListener("pointerdown", e=>{
+draggedIndex = Number(piece.dataset.index);
+piece.setPointerCapture(e.pointerId);
+});
 
-        piece.addEventListener("pointerup", e=>{
+piece.addEventListener("pointerup", e=>{
 
-            const element = document.elementFromPoint(e.clientX,e.clientY);
+const element = document.elementFromPoint(e.clientX,e.clientY);
 
-            if(element && element.classList.contains("piece")){
+if(element && element.classList.contains("piece")){
 
-                const targetIndex = Number(element.dataset.index);
+const targetIndex = Number(element.dataset.index);
 
-                swapPieces(draggedIndex,targetIndex);
-            }
+swapPieces(draggedIndex,targetIndex);
 
-        });
+}
 
-    });
+});
+
+});
 
 }
 
 function swapPieces(i1,i2){
 
-    if(i1===i2) return;
+if(i1===i2) return;
 
-    const pieces = document.querySelectorAll(".piece");
+const pieces = document.querySelectorAll(".piece");
 
-    const p1 = pieces[i1];
-    const p2 = pieces[i2];
+const p1 = pieces[i1];
+const p2 = pieces[i2];
 
-    const tempBg = p1.style.backgroundPosition;
-    const tempCorrect = p1.dataset.correct;
+const tempBg = p1.style.backgroundPosition;
+const tempCorrect = p1.dataset.correct;
 
-    p1.style.backgroundPosition = p2.style.backgroundPosition;
-    p1.dataset.correct = p2.dataset.correct;
+p1.style.backgroundPosition = p2.style.backgroundPosition;
+p1.dataset.correct = p2.dataset.correct;
 
-    p2.style.backgroundPosition = tempBg;
-    p2.dataset.correct = tempCorrect;
+p2.style.backgroundPosition = tempBg;
+p2.dataset.correct = tempCorrect;
 
-    checkWin();
+checkWin();
 }
 
 function checkWin(){
 
-    const pieces = document.querySelectorAll(".piece");
+const pieces = document.querySelectorAll(".piece");
 
-    let correct=0;
+let correct=0;
 
-    pieces.forEach((p,i)=>{
-        if(Number(p.dataset.correct)===i) correct++;
-    });
+pieces.forEach((p,i)=>{
+if(Number(p.dataset.correct)===i) correct++;
+});
 
-    if(correct===size*size){
-        setTimeout(showFinal,500);
-    }
+if(correct===size*size){
+setTimeout(showFinal,500);
+}
+
 }
 
 /* FINAL */
+
 function showFinal(){
-    document.getElementById("game").style.display="none";
-    document.getElementById("finalScreen").style.display="flex";
-    document.getElementById("music").play();
-    iniciarSlideshow();
+
+document.getElementById("game").style.display="none";
+document.getElementById("finalScreen").style.display="flex";
+document.getElementById("music").play();
+iniciarSlideshow();
+
 }
 
 /* SLIDESHOW */
+
 const imagenes=[
 "2.jpeg","3.jpeg","4.jpeg","5.jpeg","6.jpeg",
 "7.jpeg","8.jpeg","9.jpeg","10.jpeg","11.jpeg","12.jpeg"
@@ -301,64 +351,71 @@ const imagenes=[
 let indice=0;
 
 function iniciarSlideshow(){
-    const img=document.getElementById("slideshow");
 
-    function cambiarImagen(){
-        if(indice < imagenes.length){
+const img=document.getElementById("slideshow");
 
-            img.style.opacity=0;
+function cambiarImagen(){
 
-            setTimeout(()=>{
-                img.src=imagenes[indice];
-                img.style.opacity=1;
-                indice++;
-            },1200);
+if(indice < imagenes.length){
 
-            setTimeout(cambiarImagen,4000);
+img.style.opacity=0;
 
-        }else{
-            img.style.opacity=0;
+setTimeout(()=>{
+img.src=imagenes[indice];
+img.style.opacity=1;
+indice++;
+},1200);
 
-            setTimeout(()=>{
-                img.style.display="none"; 
-                typeWriter(); 
-                createHearts();
-                createPetals();
-            },1200);
-        }
-    }
+setTimeout(cambiarImagen,4000);
 
-    cambiarImagen();
+}else{
+
+img.style.opacity=0;
+
+setTimeout(()=>{
+img.style.display="none";
+typeWriter();
+createHearts();
+createPetals();
+},1200);
+
+}
+
+}
+
+cambiarImagen();
 }
 
 /* EFECTOS */
+
 function createHearts(){
-    setInterval(()=>{
-        const heart=document.createElement("div");
-        heart.classList.add("heart");
-        heart.innerHTML="❤️";
-        heart.style.left=Math.random()*100+"vw";
-        heart.style.fontSize=(20+Math.random()*30)+"px";
-        heart.style.animationDuration=(5+Math.random()*3)+"s";
-        document.body.appendChild(heart);
-        setTimeout(()=>heart.remove(),8000);
-    },400);
+setInterval(()=>{
+const heart=document.createElement("div");
+heart.classList.add("heart");
+heart.innerHTML="❤️";
+heart.style.left=Math.random()*100+"vw";
+heart.style.fontSize=(20+Math.random()*30)+"px";
+heart.style.animationDuration=(5+Math.random()*3)+"s";
+document.body.appendChild(heart);
+setTimeout(()=>heart.remove(),8000);
+},400);
 }
 
 function createPetals(){
-    setInterval(()=>{
-        const petal=document.createElement("div");
-        petal.classList.add("petal");
-        petal.innerHTML="🌹";
-        petal.style.left=Math.random()*100+"vw";
-        petal.style.fontSize=(20+Math.random()*30)+"px";
-        petal.style.animationDuration=(6+Math.random()*4)+"s";
-        document.body.appendChild(petal);
-        setTimeout(()=>petal.remove(),9000);
-    },500);
+setInterval(()=>{
+const petal=document.createElement("div");
+petal.classList.add("petal");
+petal.innerHTML="🌹";
+petal.style.left=Math.random()*100+"vw";
+petal.style.fontSize=(20+Math.random()*30)+"px";
+petal.style.animationDuration=(6+Math.random()*4)+"s";
+document.body.appendChild(petal);
+setTimeout(()=>petal.remove(),9000);
+},500);
 }
 
 /* MENSAJE */
+
 const text=`Desde que llegaste a mi vida Amorshito todo cambió... 💖
 
 Le agradezco a Dios por cruzar nuestros caminos,
@@ -383,12 +440,14 @@ con el alma y con todo lo que soy.❤️`;
 let i=0;
 
 function typeWriter(){
-    const msg=document.getElementById("message");
-    if(i<text.length){
-        msg.innerHTML+=text.charAt(i)==="\n"?"<br>":text.charAt(i);
-        i++;
-        setTimeout(typeWriter,45);
-    }
+const msg=document.getElementById("message");
+
+if(i<text.length){
+msg.innerHTML+=text.charAt(i)==="\n"?"<br>":text.charAt(i);
+i++;
+setTimeout(typeWriter,45);
+}
+
 }
 
 </script>
